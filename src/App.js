@@ -7,6 +7,7 @@ import Register from "./Links/Register";
 import Main from './Links/Main';
 import useProps from './Hooks/useProps';
 import Bio from './Pages/Bio';
+import ProfileView from './Pages/ProfileView';
 import Feeds from './Pages/Feeds';
 import axios from 'axios'
 
@@ -54,6 +55,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main userProps={userProps} setUserProps={setUserProps} />}>
             <Route path="/Pages/Bio" element={<Bio userProps={userProps} />} />
+            <Route path="/Pages/ProfileView" element={<ProfileView useProps={{Email:"ahmed116046@gmail.com",Self:"true"}}/>}/>
             <Route path="/" element={<Feeds />} />
           </Route>
         </Routes>

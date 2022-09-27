@@ -26,13 +26,13 @@ function Post() {
             <div className="card home-card">
                 <div>
                     <span style={{ position: "absolute", marginLeft: "-19vw" }}>
-                    <Link to=""><img src={profileImage} alt='' style={{width:"80px",height:"80px",border:"1px solid black",borderRadius:"50%"}} /></Link>
+                    <Link to=""><img src={profileImage} alt='' style={{ marginTop:'15px',width:"80px",height:"80px",border:"1px solid black",borderRadius:"50%"}} /></Link>
                     </span>
-                    <span style={{ position: "absolute", color: "blue", marginTop: "10px", marginLeft: "-13vw" }}>
+                    <span style={{ position: "absolute", color: "blue", marginTop: "25px", marginLeft: "-12vw" }}>
                         {name}
                         {" "} 
                     </span>
-                    <span style={{ position: "absolute", color: "grey", marginTop: "40px", marginLeft: "-13vw" }}>
+                    <span style={{ position: "absolute", color: "grey", marginTop: "40px", marginLeft: "-12vw" }}>
                         {age}
                         <i className="material-icons tiny">public</i>
                     </span>
