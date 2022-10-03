@@ -17,7 +17,6 @@ function Main(props) {
       props.setUserProps('')
     }
   }
-  console.log(userProps)
   return (
     <><div className='nevbarDiv' style={{zIndex:"2", position:"relative"}}>
       <Nevbar title={'Plant++'} userProps={userProps} logOut={logOut}/>

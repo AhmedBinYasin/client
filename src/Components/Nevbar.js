@@ -54,7 +54,7 @@ const nevbarUser = ({title,userProps,logOut}) => {
           <button className="btn btn-primary btn-lg btn-block" style={{marginTop:'10px',marginLeft:"8px"}} >Search</button>
           </div>
           <div className='mx-5'>
-          <Link className="nav-link active" aria-current="page" to="/">
+          <Link className="nav-link active" aria-current="page" to="/Links/AddPost">
           <button className="btn btn-primary btn-lg btn-block" style={{marginTop:'10px',marginLeft:"8px"}} >Add a new post</button>
               </Link>
               </div>
@@ -69,7 +69,7 @@ const nevbarUser = ({title,userProps,logOut}) => {
             position="bottom"
           >
             
-              <button
+              <Link to={'/'}><button
                 type="button"
                 className="btn btn-success col-md-12"
                 onClick={() => {
@@ -77,7 +77,7 @@ const nevbarUser = ({title,userProps,logOut}) => {
                 }}
               >
                 SignOut
-              </button>
+              </button></Link>
             
           </Popup>
         </div>

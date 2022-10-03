@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+/public/assets/ImageContent
+/public/assets/VideoContent
+/public/assets/ProfilePics
 /.pnp
 .pnp.js
 
