@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 function AddNewPost({ userProps }) {
     const [ContentType, setContentType] = useState('0');
@@ -16,6 +17,7 @@ function AddNewPost({ userProps }) {
         publicAck: false,
         saveAck: false
     })
+    
 
     const ItemImageOnChangeHandeler = (event) => { setFile(event.target.files[0]) }
     const ItemVideoOnChangeHandeler = async (event) => {
@@ -34,22 +36,91 @@ function AddNewPost({ userProps }) {
     }
     const handleChange = value => {
         setContentType(value)
+        setPostData({ ...postData, Type: value })
         if (value == '3') { setPostData({ ...postData, Fields: [{ FieldName: 'ScientificName', FieldValue: '' }, { FieldName: 'OrginizationName', FieldValue: '' }, { FieldName: 'Adress', FieldValue: '' }, { FieldName: 'Group', FieldValue: '' }, { FieldName: 'Growth Habit', FieldValue: '' }] }) }
         else { setPostData({ ...postData, Fields: [] }) }
         setFile('')
     };
+    function FieldsUpdater(e,fieldName){
+        let temp=postData.Fields
+        temp[temp.findIndex(object => {return object.FieldName === fieldName})].FieldValue=e.target.value
+        setPostData({...postData,Fields:temp})
+        console.log(postData.Fields)
+        
+
+    }
     function FieldTableGenerator(fields) {
         let fieldsTable = fields?.map(function (field) {
             return (
                 <div className='col-md-4 px-1'>
                     <label htmlFor="Title">{field.FieldName}</label>
-                    <input type="text" className="form-control" id="Orginization" placeholder="Enter" value={field.FieldValue} onChange={(e) => { setPostData({ ...postData, Title: e.target.value }) }} />
+                    <input type="text" className="form-control" id={field.FieldName} placeholder="Enter" value={postData.Fields[postData.Fields.findIndex(object => {return object.FieldName === field.FieldName})].FieldValue} onChange={(e)=>{FieldsUpdater(e,field.FieldName)}} />
                 </div>
             )
         })
         return fieldsTable
     }
-    function addPostOnClickHendeler() { }
+    async function addPostOnClickHendeler(e) {
+        e.preventDefault()
+        if(ContentType=='0'){
+            let request={
+                id:postData.id,
+                Type:ContentType,
+                Title:postData.Title,
+                TextContent:postData.TextContent,
+                Fields:postData.Fields,
+                Activity:postData.Activity,
+                publicAck:postData.publicAck,
+                saveAck:postData.saveAck,
+            }
+            await axios.post('http://localhost:5000/api/post/CreatePostText', request)
+        }
+        else if(ContentType=='1'){
+            console.log(postData)
+            const formData = new FormData()
+            formData.append('UploadsRelation',postData.id)
+            formData.append('Type',ContentType)
+            formData.append('Title', postData.Title)
+            formData.append('TextContent',postData.TextContent)
+            formData.append('Fields',postData.Fields)
+            formData.append('Activity',postData.Activity)
+            formData.append('publicAck',postData.publicAck)
+            formData.append('saveAck',postData.saveAck)
+            formData.append('FileImage', file)
+            console.log(formData.values())
+            await axios.post('http://localhost:5000/api/post/CreatePostImage', formData)
+        }
+        else if(ContentType=='2'){
+            console.log(postData)
+            const formData = new FormData()
+            formData.append('UploadsRelation',postData.id)
+            formData.append('Type',ContentType)
+            formData.append('Title', postData.Title)
+            formData.append('TextContent',postData.TextContent)
+            formData.append('Fields',postData.Fields)
+            formData.append('Activity',postData.Activity)
+            formData.append('publicAck',postData.publicAck)
+            formData.append('saveAck',postData.saveAck)
+            formData.append('FileVideo', file)
+            console.log(formData.values())
+            await axios.post('http://localhost:5000/api/post/CreatePostVideo', formData)
+        }
+        else if(ContentType=='3'){
+            const formData = new FormData()
+            formData.append('UploadsRelation',postData.id)
+            formData.append('Type',ContentType)
+            formData.append('Title', postData.Title)
+            formData.append('TextContent',postData.TextContent)
+            formData.append('Fields',postData.Fields)
+            formData.append('Activity',postData.Activity)
+            formData.append('publicAck',postData.publicAck)
+            formData.append('saveAck',postData.saveAck)
+            formData.append('FileImage', file)
+            await axios.post('http://localhost:5000/api/post/CreateNurseryListing', formData)
+        }
+
+
+    }
     function TextPost() {
         return (
             <div className="row">
@@ -84,7 +155,7 @@ function AddNewPost({ userProps }) {
                         <hr className="mb-4" />
                         <div className="row">
                             <div className="col-md-6">
-                                <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={() => { addPostOnClickHendeler() }} >Add Post</button></Link>
+                                <button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={(e) => { addPostOnClickHendeler(e) }} >Add Post</button>
                             </div>
                             <div className="col-md-6">
                                 <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" >Close</button></Link>
@@ -140,7 +211,7 @@ function AddNewPost({ userProps }) {
                         <hr className="mb-4" />
                         <div className="row">
                             <div className="col-md-6">
-                                <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={() => { addPostOnClickHendeler() }} >Add Post</button></Link>
+                                <button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={(e) => { addPostOnClickHendeler(e) }} >Add Post</button>
                             </div>
                             <div className="col-md-6">
                                 <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" >Close</button></Link>
@@ -192,7 +263,7 @@ function AddNewPost({ userProps }) {
                         <hr className="mb-4" />
                         <div className="row">
                             <div className="col-md-6">
-                                <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={() => { addPostOnClickHendeler() }} >Add Post</button></Link>
+                                <button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={(e) => { addPostOnClickHendeler(e) }} >Add Post</button>
                             </div>
                             <div className="col-md-6">
                                 <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" >Close</button></Link>
@@ -253,7 +324,7 @@ function AddNewPost({ userProps }) {
                         <hr className="mb-4" />
                         <div className="row">
                             <div className="col-md-6">
-                                <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={() => { addPostOnClickHendeler() }} >Add Post</button></Link>
+                                <button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={() => { addPostOnClickHendeler() }} >Add Post</button>
                             </div>
                             <div className="col-md-6">
                                 <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" >Close</button></Link>
