@@ -2,9 +2,28 @@ import React from 'react'
 import Post from './../Components/Post';
 import ProfileNev from '../Components/ProfileNev'
 import ActivityNev from '../Components/ActivityNev';
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 
 function Feeds({userProps}) {
+  const [feeds, setFeeds] = useState([])
+  let getUserFeedData=async()=>{
+    let Responce=await axios.post(`http://localhost:5000/api/post/GetFeeds`,).catch((err) => console.log(err))
+    setFeeds(Responce.data)
+  }
+  useEffect( () => {
+    getUserFeedData()
+  }, [])
+  function FeedsTable(){
+    let feedsTable=feeds?.map(function (feed) {
+      return (
+        <Post feed={feed} userProps={userProps}/>
+      )
+    })
+    return feedsTable
+  }
   return (
     <div  >
       <div className="row">
@@ -16,8 +35,7 @@ function Feeds({userProps}) {
         <div className="col-md-1" >
         </div>
         <div className="col-md-5" style={{marginTop:"5vh",zIndex:"1",}}>
-          <Post/>
-          <Post/>
+          {FeedsTable()}
         </div>
         <div className="col-md-1" >
         </div>

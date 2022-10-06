@@ -17,7 +17,6 @@ import AddNewPost from './Links/AddNewPost';
 
 function App() {
   const { userProps, setUserProps } = useProps()
-  console.log(userProps)
   if (!userProps) {
     return (
       <div className="App">
@@ -38,10 +37,8 @@ function App() {
         Name:userProps.user.Name,
         Role:Role
       }})
-      console.log(userProps)
     }
   }
-  {console.log(userProps)}
   if (userProps.user.Role === 'new') {
     return (
       <Router>
@@ -57,7 +54,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main userProps={userProps} setUserProps={setUserProps} />}>
             <Route path="/Pages/Bio" element={<Bio userProps={userProps} />} />
-            <Route path="/Pages/ProfileView" element={<ProfileView selfProps={{Email:"ahmed116046@gmail.com",Self:"true"}} userProps={userProps}/>}/>
+            <Route path="/Pages/ProfileView" element={<ProfileView userProps={userProps}/>}/>
             <Route path="/Pages/PostView" element={<PostView />}/>
             <Route path="/Links/AddPost" element={<AddNewPost userProps={userProps}/>} />
             <Route path="/" element={<Feeds userProps={userProps}/>} />
