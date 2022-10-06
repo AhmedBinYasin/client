@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 function AddNewPost({ userProps }) {
     const [ContentType, setContentType] = useState('0');
@@ -17,6 +18,7 @@ function AddNewPost({ userProps }) {
         publicAck: false,
         saveAck: false
     })
+    let navigate = useNavigate(); 
     
 
     const ItemImageOnChangeHandeler = (event) => { setFile(event.target.files[0]) }
@@ -73,7 +75,10 @@ function AddNewPost({ userProps }) {
                 publicAck:postData.publicAck,
                 saveAck:postData.saveAck,
             }
-            await axios.post('http://localhost:5000/api/post/CreatePostText', request)
+            const res =await axios.post('http://localhost:5000/api/post/CreatePostText', request)
+            if(res.data=='Success'){
+                navigate('/')
+            }
         }
         else if(ContentType=='1'){
             console.log(postData)
@@ -88,7 +93,10 @@ function AddNewPost({ userProps }) {
             formData.append('saveAck',postData.saveAck)
             formData.append('FileImage', file)
             console.log(formData.values())
-            await axios.post('http://localhost:5000/api/post/CreatePostImage', formData)
+            const res =await axios.post('http://localhost:5000/api/post/CreatePostImage', formData)
+            if(res.data=='Success'){
+                navigate('/')
+            }
         }
         else if(ContentType=='2'){
             console.log(postData)
@@ -103,7 +111,10 @@ function AddNewPost({ userProps }) {
             formData.append('saveAck',postData.saveAck)
             formData.append('FileVideo', file)
             console.log(formData.values())
-            await axios.post('http://localhost:5000/api/post/CreatePostVideo', formData)
+            const res =await axios.post('http://localhost:5000/api/post/CreatePostVideo', formData)
+            if(res.data=='Success'){
+                navigate('/')
+            }
         }
         else if(ContentType=='3'){
             const formData = new FormData()
@@ -111,12 +122,18 @@ function AddNewPost({ userProps }) {
             formData.append('Type',ContentType)
             formData.append('Title', postData.Title)
             formData.append('TextContent',postData.TextContent)
-            formData.append('Fields',postData.Fields)
+            postData.Fields.forEach(x=>{
+                formData.append('FieldName',x.FieldName)
+                formData.append('FieldValue',x.FieldValue)
+            })
             formData.append('Activity',postData.Activity)
             formData.append('publicAck',postData.publicAck)
             formData.append('saveAck',postData.saveAck)
             formData.append('FileImage', file)
-            await axios.post('http://localhost:5000/api/post/CreateNurseryListing', formData)
+            const res = await axios.post('http://localhost:5000/api/post/CreateNurseryListing', formData)
+            if(res.data=='Success'){
+                navigate('/')
+            }
         }
 
 
@@ -324,7 +341,7 @@ function AddNewPost({ userProps }) {
                         <hr className="mb-4" />
                         <div className="row">
                             <div className="col-md-6">
-                                <button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={() => { addPostOnClickHendeler() }} >Add Post</button>
+                                <button className="btn btn-primary btn-lg btn-block" style={{ marginLeft: '25vw' }} onClick={(e) => { addPostOnClickHendeler(e) }} >Add Post</button>
                             </div>
                             <div className="col-md-6">
                                 <Link to="/" className="link-danger"><button className="btn btn-primary btn-lg btn-block" >Close</button></Link>
