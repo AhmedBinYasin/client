@@ -18,9 +18,11 @@ function Feeds({userProps}) {
   }, [])
   function FeedsTable(){
     let feedsTable=feeds?.map(function (feed) {
-      return (
+      if(feed.Type!='3'){
+        return (
         <Post feed={feed} userProps={userProps}/>
       )
+    }
     })
     return feedsTable
   }
